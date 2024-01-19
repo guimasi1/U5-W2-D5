@@ -33,6 +33,9 @@ public class UsersService {
         usersDAO.findByEmail(user.email()).ifPresent(user1 -> {
             throw new BadRequestException("Email " + user.email() + " già in uso");
         });
+        usersDAO.findByUsername(user.username()).ifPresent(user1 -> {
+            throw new BadRequestException("L'username " + user.username() + " già in uso");
+        });
 
         User newUser = new User();
         newUser.setUsername(user.username());
