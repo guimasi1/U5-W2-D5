@@ -35,7 +35,13 @@ public class DevicesService {
         return devicesDAO.findByTypeAndStatus(type,status,pageable);
     }
     public Device save(NewDeviceDTO device) {
+        List<String> types = List.of("smartphone", "tablet", "laptop");
+        List<String> statuses = List.of("available", "assigned", "in_maintenance", "disused");
         User user = usersService.findById(device.userUUID());
+        if(!types.contains(device.type())) throw new BadRequestException("Non è possibile inserire '" + device.type() + "' come tipo di dispositivo. Scegliere " +
+                "uno fra questi tipi: smartphone, tablet, laptop");
+        if(!statuses.contains(device.status())) throw new BadRequestException("Non è possibile inserire '" + device.status() + "' come stato del dispositivo. Scegliere " +
+                "uno fra questi stati: available, assigned, in_maintenance, disused");
         Device newDevice = new Device();
         newDevice.setType(device.type());
         newDevice.setUser(user);
@@ -73,6 +79,18 @@ public class DevicesService {
                     "uno fra questi stati: available, assigned, in_maintenance, disused");
         }
 
+    }
+
+    public Device changeType(UUID uuid, String type) {
+        Device found = this.findById(uuid);
+        List<String> types = List.of("smartphone", "tablet", "laptop");
+        if(types.contains(type)) {
+            found.setType(type);
+            return devicesDAO.save(found);
+        } else {
+            throw new BadRequestException("Non è possibile inserire '" + type + "' come tipo di dispositivo. Scegliere " +
+                    "uno fra questi tipi: smartphone, tablet, laptop");
+        }
     }
 
 

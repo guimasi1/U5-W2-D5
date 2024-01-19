@@ -43,10 +43,14 @@ public class DevicesController {
     }
 
     @PatchMapping("/{id}/changeStatus")
-    public Device changeStatusById(@PathVariable UUID id, @RequestBody DeviceStatusDTO statusDTO) {
+    public Device changeStatusById(@PathVariable UUID id, @RequestBody DevicesStatusDTO statusDTO) {
         return devicesService.changeStatus(id, statusDTO.status());
     }
 
+    @PatchMapping("/{id}/changeType")
+    public Device changeTypeById(@PathVariable UUID id, @RequestBody DevicesTypeDTO devicesTypeDTO) {
+        return devicesService.changeType(id, devicesTypeDTO.type());
+    }
 
     @DeleteMapping("/{uuid}")
     public void deleteById(@PathVariable UUID uuid) {
