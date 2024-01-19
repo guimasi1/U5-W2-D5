@@ -32,4 +32,11 @@ public class User {
     private List<Device> deviceList;
     private String avatarUrl;
 
+    public User(String username, String name, String surname, String email, String avatarUrl) {
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.avatarUrl = avatarUrl;
+    }
 }

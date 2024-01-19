@@ -47,6 +47,11 @@ public class UsersService {
         return usersDAO.save(newUser);
     }
 
+    public void save(User user) {
+        // metodo per salvare direttamente gli utenti creati con Java Faker nel database
+        usersDAO.save(user);
+    }
+
     public User findById(UUID id) {
         return usersDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
