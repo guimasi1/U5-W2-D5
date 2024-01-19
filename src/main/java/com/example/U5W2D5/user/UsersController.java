@@ -2,6 +2,7 @@ package com.example.U5W2D5.user;
 
 import com.example.U5W2D5.config.MailgunSender;
 import com.example.U5W2D5.exceptions.BadRequestException;
+import jakarta.persistence.PreUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,13 @@ public class UsersController {
     private MailgunSender mailgunSender;
 
     @GetMapping
-    public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "10") int size,
-                                   @RequestParam(defaultValue = "id") String id) {
-        return usersService.getUsers(page,size,id);
+    public Page<User> getUsers(
+                                    @RequestParam(required = false) String name,
+                                    @RequestParam(required = false) String surname,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(defaultValue = "id") String id) {
+        return usersService.getUsers(name, surname, page, size, id);
     }
 
     @PostMapping

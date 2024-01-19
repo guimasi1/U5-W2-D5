@@ -2,6 +2,7 @@ package com.example.U5W2D5.user;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.U5W2D5.device.Device;
 import com.example.U5W2D5.exceptions.BadRequestException;
 import com.example.U5W2D5.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,15 @@ public class UsersService {
 
         user.setAvatarUrl(url);
         return usersDAO.save(user);
+    }
+
+    public Page<User> getUsers(String name, String surname, int page, int size, String orderBy) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
+        if(name == null && surname == null) return usersDAO.findAll(pageable);
+        if(name == null) return usersDAO.findBySurname(surname,pageable);
+        if(surname == null) return usersDAO.findByName(name,pageable);
+        return usersDAO.findByNameAndSurname(name,surname,pageable);
+
     }
 
 }
