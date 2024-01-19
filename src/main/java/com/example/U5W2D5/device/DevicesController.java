@@ -17,10 +17,13 @@ public class DevicesController {
     DevicesService devicesService;
 
     @GetMapping
-    public Page<Device> getDevices(@RequestParam(defaultValue = "0") int page,
-                               @RequestParam(defaultValue = "10") int size,
-                               @RequestParam(defaultValue = "id") String id) {
-        return devicesService.getDevices(page,size,id);
+    public Page<Device> getDevices(
+                                @RequestParam(required = false) String type,
+                                @RequestParam(required = false) String status,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(defaultValue = "id") String id) {
+        return devicesService.getDevices(type,status,page,size,id);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

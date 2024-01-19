@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.event.PaintEvent;
 import java.util.UUID;
 
 
@@ -51,5 +52,14 @@ public class DevicesService {
     public void deleteById(UUID uuid) {
         Device found = this.findById(uuid);
         devicesDAO.delete(found);
+    }
+
+    public Page<Device> getDevices(String type, String status, int page, int size, String orderBy) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
+        if(type == null && status == null) return devicesDAO.findAll(pageable);
+        if(type == null) return devicesDAO.findByStatus(status,pageable);
+        if(status == null) return devicesDAO.findByType(type,pageable);
+        return devicesDAO.findByTypeAndStatus(type,status,pageable);
+
     }
 }

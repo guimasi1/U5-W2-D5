@@ -13,6 +13,5 @@ public record NewDeviceDTO(
         @NotEmpty
         @Size(min = 3, max = 20, message = "Lo stato del dispositivo deve essere di almeno 3 caratteri e massimo 20.")
         String status,
-        @NotEmpty
         UUID userUUID) {
 }

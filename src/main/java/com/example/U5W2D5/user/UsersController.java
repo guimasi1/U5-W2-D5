@@ -38,7 +38,7 @@ public class UsersController {
             throw new BadRequestException("Errori nel payload.");
         } else {
             User newUser = usersService.save(user);
-            mailgunSender.sendMail(newUser.getEmail(),mailFrom);
+           // mailgunSender.sendMail(newUser.getEmail(),mailFrom);
             return new UsersResponseDTO(newUser.getId());
         }
     }
