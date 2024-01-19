@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/devices")
 public class DevicesController {
@@ -34,4 +36,20 @@ public class DevicesController {
             return new DevicesRespondeDTO(newDevice.getId());
         }
     }
+
+    @PutMapping("/{uuid}")
+    public Device updateById(@PathVariable UUID uuid, @RequestBody NewDeviceDTO body) {
+        return devicesService.findByIdAndUpdate(uuid, body);
+    }
+
+    @DeleteMapping("/{uuid}")
+    public void deleteById(@PathVariable UUID uuid) {
+        devicesService.deleteById(uuid);
+    }
+
+    @GetMapping("/{id}")
+    public Device getDeviceById(@PathVariable UUID id) {
+        return devicesService.findById(id);
+    }
+
 }
