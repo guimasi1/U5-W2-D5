@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "devices")
@@ -16,7 +17,7 @@ public class Device {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue
-    private UUID uuid;
+    private UUID id;
     private String type;
     private String status;
     @ManyToOne
