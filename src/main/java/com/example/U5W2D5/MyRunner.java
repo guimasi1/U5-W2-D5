@@ -16,7 +16,7 @@ public class MyRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Hello");
-        // createFakeUsers();
+        createFakeUsers();
     }
 
     public void createFakeUsers() {
