@@ -3,6 +3,7 @@ package com.example.U5W2D5.user;
 import com.example.U5W2D5.config.MailgunSender;
 import com.example.U5W2D5.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -31,13 +32,13 @@ public class UsersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersResponseDTO create(@RequestBody @Validated NewUserDTO user, BindingResult validation) {
+    public UsersResponseDTO create(@RequestBody @Validated NewUserDTO user, BindingResult validation, @Value("${mail.from}") String mailFrom) {
         if(validation.hasErrors()) {
             System.out.println(validation.getAllErrors());
             throw new BadRequestException("Errori nel payload.");
         } else {
             User newUser = usersService.save(user);
-            mailgunSender.sendMail(newUser.getEmail());
+            mailgunSender.sendMail(newUser.getEmail(),mailFrom);
             return new UsersResponseDTO(newUser.getId());
         }
     }

@@ -17,14 +17,14 @@ public class MailgunSender {
         this.mailgunDomainName = mailgunDomainName;
     }
 
-    public void sendMail(String recipient) {
+    public void sendMail(String recipient, @Value("${mail.from}") String mailFrom) {
         HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.mailgunDomainName + "/messages")
                 .basicAuth("api", this.mailgunApikey)
-                .queryString("from", "Guido Masi <masiguido1@gmail.com>")
+                .queryString("from", mailFrom)
                 .queryString("to", recipient)
                 .queryString("subject", "Registrazione completata!")
                 .queryString("text", "Grazie per averci scelto.")
                 .asJson();
-        System.out.println("Mail mandata all'indirizzo " + recipient);
+        System.out.println("Mail mandata dall'indirizzo" + mailFrom + "all'indirizzo " + recipient);
     }
 }
