@@ -4,7 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.U5W2D5.exceptions.BadRequestException;
 import com.example.U5W2D5.exceptions.NotFoundException;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +17,6 @@ import java.util.UUID;
 
 
 @Service
-@Getter
 public class UsersService {
     @Autowired
     UsersDAO usersDAO;
