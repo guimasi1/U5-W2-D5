@@ -42,6 +42,12 @@ public class DevicesController {
         return devicesService.findByIdAndUpdate(uuid, body);
     }
 
+    @PatchMapping("/{id}/changeStatus")
+    public Device changeStatusById(@PathVariable UUID id, @RequestBody DeviceStatusDTO statusDTO) {
+        return devicesService.changeStatus(id, statusDTO.status());
+    }
+
+
     @DeleteMapping("/{uuid}")
     public void deleteById(@PathVariable UUID uuid) {
         devicesService.deleteById(uuid);

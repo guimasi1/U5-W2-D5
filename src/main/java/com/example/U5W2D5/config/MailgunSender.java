@@ -27,4 +27,15 @@ public class MailgunSender {
                 .asJson();
         System.out.println("Mail mandata dall'indirizzo" + mailFrom + "all'indirizzo " + recipient);
     }
+
+    public void sendRemovedUserMail(String recipient, @Value("${mail.from}") String mailFrom) {
+        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.mailgunDomainName + "/messages")
+                .basicAuth("api", this.mailgunApikey)
+                .queryString("from", mailFrom)
+                .queryString("to", recipient)
+                .queryString("subject", "Account eliminato")
+                .queryString("text", "Ci dispiace vederti andar via...")
+                .asJson();
+        System.out.println("Mail mandata dall'indirizzo" + mailFrom + "all'indirizzo " + recipient);
+    }
 }

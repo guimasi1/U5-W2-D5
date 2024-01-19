@@ -11,7 +11,6 @@ import java.util.UUID;
 public interface DevicesDAO extends JpaRepository<Device, UUID> {
     Page<Device> findByStatus(String status, Pageable pageable);
     Page<Device> findByType(String type, Pageable pageable);
-
     Page<Device> findByTypeAndStatus(String type, String status, Pageable pageable);
 
 }

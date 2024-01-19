@@ -1,5 +1,6 @@
 package com.example.U5W2D5.device;
 
+import com.example.U5W2D5.exceptions.BadRequestException;
 import com.example.U5W2D5.exceptions.NotFoundException;
 import com.example.U5W2D5.user.User;
 import com.example.U5W2D5.user.UsersService;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.event.PaintEvent;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -25,6 +26,13 @@ public class DevicesService {
     public Page<Device> getDevices(int page, int size, String orderBy) {
         Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
         return devicesDAO.findAll(pageable);
+    }
+    public Page<Device> getDevices(String type, String status, int page, int size, String orderBy) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
+        if(type == null && status == null) return devicesDAO.findAll(pageable);
+        if(type == null) return devicesDAO.findByStatus(status,pageable);
+        if(status == null) return devicesDAO.findByType(type,pageable);
+        return devicesDAO.findByTypeAndStatus(type,status,pageable);
     }
     public Device save(NewDeviceDTO device) {
         User user = usersService.findById(device.userUUID());
@@ -54,12 +62,18 @@ public class DevicesService {
         devicesDAO.delete(found);
     }
 
-    public Page<Device> getDevices(String type, String status, int page, int size, String orderBy) {
-        Pageable pageable = PageRequest.of(page,size, Sort.by(orderBy));
-        if(type == null && status == null) return devicesDAO.findAll(pageable);
-        if(type == null) return devicesDAO.findByStatus(status,pageable);
-        if(status == null) return devicesDAO.findByType(type,pageable);
-        return devicesDAO.findByTypeAndStatus(type,status,pageable);
+    public Device changeStatus(UUID uuid, String status) {
+        Device found = this.findById(uuid);
+        List<String> statuses = List.of("available","assigned","in_maintenance","disused");
+        if(statuses.contains(status)) {
+            found.setStatus(status);
+            return devicesDAO.save(found);
+        } else {
+            throw new BadRequestException("Non è possibile inserire '" + status + "' come stato del dispositivo. Scegliere " +
+                    "uno fra questi stati: available, assigned, in_maintenance, disused");
+        }
 
     }
+
+
 }

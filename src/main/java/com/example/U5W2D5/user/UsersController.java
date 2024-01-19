@@ -42,7 +42,7 @@ public class UsersController {
             throw new BadRequestException("Errori nel payload.");
         } else {
             User newUser = usersService.save(user);
-           // mailgunSender.sendMail(newUser.getEmail(),mailFrom);
+            mailgunSender.sendMail(newUser.getEmail(),mailFrom);
             return new UsersResponseDTO(newUser.getId());
         }
     }
@@ -53,7 +53,8 @@ public class UsersController {
     }
 
     @DeleteMapping("/{uuid}")
-    public void deleteById(@PathVariable UUID uuid) {
+    public void deleteById(@PathVariable UUID uuid, @Value("${mail.from}") String mailFrom) {
+        mailgunSender.sendRemovedUserMail(usersService.findById(uuid).getEmail(), mailFrom);
         usersService.deleteById(uuid);
     }
 
