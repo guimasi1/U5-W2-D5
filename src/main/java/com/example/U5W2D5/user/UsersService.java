@@ -61,12 +61,15 @@ public class UsersService {
         usersDAO.delete(found);
     }
 
-    public String uploadPicture(MultipartFile file) throws IOException {
+    public User uploadAvatar(MultipartFile file, UUID id) throws IOException {
 
         String url = (String) cloudinary.uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap())
                 .get("url");
-        return url;
+        User user = this.findById(id);
+
+        user.setAvatarUrl(url);
+        return usersDAO.save(user);
     }
 
 }

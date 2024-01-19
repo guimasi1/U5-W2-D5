@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +37,7 @@ public class UsersController {
             throw new BadRequestException("Errori nel payload.");
         } else {
             User newUser = usersService.save(user);
-            //mailgunSender.sendMail(newUser.getEmail());
+            mailgunSender.sendMail(newUser.getEmail());
             return new UsersResponseDTO(newUser.getId());
         }
     }
@@ -54,5 +56,12 @@ public class UsersController {
     public User getUserById(@PathVariable UUID uuid) {
         return usersService.findById(uuid);
     }
+
+    @PatchMapping("/{id}/upload")
+    public User uploadAvatar(@RequestParam("avatar") MultipartFile file, @PathVariable UUID id) throws IOException {
+
+        return usersService.uploadAvatar(file, id);
+    }
+
 
 }

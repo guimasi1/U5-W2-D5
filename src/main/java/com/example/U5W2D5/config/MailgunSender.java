@@ -25,5 +25,6 @@ public class MailgunSender {
                 .queryString("subject", "Registrazione completata!")
                 .queryString("text", "Grazie per averci scelto.")
                 .asJson();
+        System.out.println("Mail mandata all'indirizzo " + recipient);
     }
 }
